@@ -16,6 +16,6 @@ const HELP_MESSAGE = 'You can say tell me a space fact, or, you can say exit... 
 const HELP_REPROMPT = 'What can I help you with?';
 const STOP_MESSAGE = 'Goodbye!';
 
-const home = require('./skills/homes');
+var homes = require('./skills/homes');
 app.use('/bot-webhook',homes);
   
