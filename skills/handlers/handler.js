@@ -24,24 +24,26 @@ const SessionEndedRequestHandler = {
 };
 
 
-exports.handler = async function (event, context) {
+var handler = async function (event, context) {
     console.log(`REQUEST++++${JSON.stringify(event)}`);
 
     // HelloWorldIntentHandler,
     //       HelpIntentHandler,
     //       CancelAndStopIntentHandler,
     if (!skill) {
-      skill = Alexa.SkillBuilders.custom()
-        .addRequestHandlers(
-          LaunchRequestHandler,
-          SessionEndedRequestHandler,
-        )
-        .addErrorHandlers(ErrorHandler)
-        .create();
+        skill = Alexa.SkillBuilders.custom()
+            .addRequestHandlers(
+                LaunchRequestHandler,
+                SessionEndedRequestHandler,
+            )
+            .addErrorHandlers(ErrorHandler)
+            .create();
     }
-  
+
     const response = await skill.invoke(event, context);
     console.log(`RESPONSE++++${JSON.stringify(response)}`);
-  
+
     return response;
-  };
+};
+
+exports.handler = handler;
