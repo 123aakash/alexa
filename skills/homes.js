@@ -28,7 +28,7 @@ const SessionEndedRequestHandler = {
 };
 
 var skill;
-router.post('/', function (req, res) {
+router.post('/', async function (req, res) {
     var req = req.body;
     console.log(req);
 
