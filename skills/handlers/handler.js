@@ -58,8 +58,9 @@ var handler =async function (event, context) {
             .create();
     }
 
-    return skill.invoke(event, context);
-    // console.log(`RESPONSE++++${JSON.stringify(response)}`);
+     skill.invoke(event, context).then((response)=>{
+        return response;
+     });
 };
 
 exports.handler = handler;
