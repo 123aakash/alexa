@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const Alexa = require('ask-sdk');
-var handler = require('./handlers/handler');
+var handler = require('./handlers/handler').handler;
 
 
 
