@@ -9,4 +9,4 @@ router.post('/',function(req, res){
     res.send('sdafdsf');
 });
 
-modules.export = router;
+module.export = router;
