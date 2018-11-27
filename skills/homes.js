@@ -36,9 +36,6 @@ router.post('/', function (req, res) {
         skill = Alexa.SkillBuilders.custom()
             .addRequestHandlers(
                 LaunchRequestHandler,
-                HelloWorldIntentHandler,
-                HelpIntentHandler,
-                CancelAndStopIntentHandler,
                 SessionEndedRequestHandler,
             )
             .addErrorHandlers(ErrorHandler)
