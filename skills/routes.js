@@ -13,4 +13,5 @@ router.post('/', async function (req, res) {
     return res.json(response);
 });
 
+exports.handler = handler;
 module.exports = router;
