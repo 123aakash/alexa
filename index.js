@@ -117,26 +117,7 @@ app.post('/bot-webhook', (req, res) => {
   
     }
   
-    return responseAlexaWebhook(responseObj);
+    return res.json(responseObj);
   
   });
   
-  function responseAlexaWebhook(responseObj) {
-  
-    request({
-      uri: '/alexa-webhook-response',
-      method: 'POST',
-      json: responseObj,
-      headers: {
-        'Content-type': 'application/json',
-      },
-    }, function(error, response, body) {
-      if (error) {
-        console.log('Error:', error);
-        return;
-      } else {
-        console.log('Response sent to Alexa-Webhook');
-        return;
-      }
-    });
-}
