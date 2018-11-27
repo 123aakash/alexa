@@ -124,7 +124,7 @@ app.post('/bot-webhook', (req, res) => {
   function responseAlexaWebhook(responseObj) {
   
     request({
-      uri: config.ALEXA_WEBHOOK_URL + '/alexa-webhook-response',
+      uri: '/alexa-webhook-response',
       method: 'POST',
       json: responseObj,
       headers: {
@@ -139,4 +139,4 @@ app.post('/bot-webhook', (req, res) => {
         return;
       }
     });
-  
+}
