@@ -3,18 +3,18 @@ const Alexa = require('ask-sdk');
 
 const HelloWorldHandler = {
     canHandle(handlerInput) {
-      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-        && handlerInput.requestEnvelope.request.intent.name === 'HelloWorldIntent';
+        return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+            && handlerInput.requestEnvelope.request.intent.name === 'HelloWorldIntent';
     },
     handle(handlerInput) {
-      const speechText = 'Hello World!';
-  
-      return handlerInput.responseBuilder
-        .speak(speechText)
-        .withSimpleCard('Hello World', speechText)
-        .getResponse();
+        const speechText = 'Hello World!';
+
+        return handlerInput.responseBuilder
+            .speak(speechText)
+            .withSimpleCard('Hello World', speechText)
+            .getResponse();
     }
-  };
+};
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -44,20 +44,20 @@ const SessionEndedRequestHandler = {
 
 const ErrorHandler = {
     canHandle() {
-      return true;
+        return true;
     },
     handle(handlerInput, error) {
-      console.log(`Error handled: ${error.message}`);
-  
-      return handlerInput.responseBuilder
-        .speak('Sorry, I can\'t understand the command. Please say again.')
-        .reprompt('Sorry, I can\'t understand the command. Please say again.')
-        .getResponse();
+        console.log(`Error handled: ${error.message}`);
+
+        return handlerInput.responseBuilder
+            .speak('Sorry, I can\'t understand the command. Please say again.')
+            .reprompt('Sorry, I can\'t understand the command. Please say again.')
+            .getResponse();
     },
-  };
+};
 
 var skill = null;
-var handler = async function (event) {
+var handler = async function (event, context) {
     // console.log(`REQUEST++++${JSON.stringify(event)}`);
 
     // HelloWorldIntentHandler,
@@ -73,7 +73,7 @@ var handler = async function (event) {
             .create();
     }
 
-     return skill.invoke(event);
+    return skill.invoke(event, context);
 };
 
 exports.handler = handler;
