@@ -57,7 +57,7 @@ const ErrorHandler = {
   };
 
 var skill = null;
-var handler =async function (event) {
+var handler = async function (event) {
     // console.log(`REQUEST++++${JSON.stringify(event)}`);
 
     // HelloWorldIntentHandler,
@@ -73,8 +73,9 @@ var handler =async function (event) {
             .create();
     }
 
-     skill.invoke(event).then((response)=>{
-        return response;
+     skill.invoke(event).then((abc)=>{
+        console.log("RESPONSE:",JSON.stringify(abc))
+        return abc;
      });
 };
 
