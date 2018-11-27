@@ -12,8 +12,6 @@ router.post('/', async function (req, res) {
         console.log("Actual RESPONSE:",JSON.stringify(abc))
         return res.json(abc);
      }); 
-    console.log("RESPONSE:",JSON.stringify(response));
-    return res.json(response);
 });
 
 exports.handler = handler;
