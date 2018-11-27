@@ -1,5 +1,21 @@
 const Alexa = require('ask-sdk');
 
+
+const HelloWorldHandler = {
+    canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+        && handlerInput.requestEnvelope.request.intent.name === 'HelloWorldIntent';
+    },
+    handle(handlerInput) {
+      const speechText = 'Hello World!';
+  
+      return handlerInput.responseBuilder
+        .speak(speechText)
+        .withSimpleCard('Hello World', speechText)
+        .getResponse();
+    }
+  };
+
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
         return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
@@ -51,8 +67,7 @@ var handler =async function (event) {
         console.log("SKILL creating");
         skill = Alexa.SkillBuilders.custom()
             .addRequestHandlers(
-                LaunchRequestHandler,
-                SessionEndedRequestHandler,
+                HelloWorldHandler
             )
             .addErrorHandlers(ErrorHandler)
             .create();
