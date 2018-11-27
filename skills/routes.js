@@ -8,7 +8,7 @@ router.post('/', async function (req, res) {
     let context = data.context;
     let event = "event";
 
-    const response = handler(data,data.context); 
+    const response = handler(data); 
     console.log("RESPONSE:",JSON.stringify(response))
     return res.json(response);
 });
