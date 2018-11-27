@@ -73,7 +73,7 @@ var handler = async function (event) {
             .create();
     }
 
-     skill.invoke(event);
+     return skill.invoke(event);
 };
 
 exports.handler = handler;
