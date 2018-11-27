@@ -6,9 +6,6 @@ app.get('/',(req,res)=>{
     res.send("Hello");
 });
 const port = process.env.PORT || 3000;
-app.listen(port,(err)=>{
-    console.log(`Listening on port ${port}`);    
-});
 
 
 /* eslint-disable  func-names */
@@ -108,3 +105,7 @@ exports.handler = function (event, context, callback) {
     alexa.registerHandlers(handlers);
     alexa.execute();
 };
+
+app.listen(port,(err)=>{
+    console.log(`Listening on port ${port}`);    
+});
