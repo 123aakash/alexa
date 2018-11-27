@@ -10,7 +10,8 @@ router.post('/', async function (req, res) {
 
     const response = await handler(data, data.context);
     console.log("aakash:", typeof data, JSON.stringify(response));
-    res.send(response);
+    res.status(200);
+    res.json(response);
 });
 
 module.exports = router;
