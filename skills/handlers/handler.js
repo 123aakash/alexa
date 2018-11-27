@@ -57,7 +57,7 @@ var handler = async function (event, context) {
             .create();
     }
 
-    const response = await skill.invoke(event, context);
+    const response = skill.invoke(event, context);
     // console.log(`RESPONSE++++${JSON.stringify(response)}`);
 
     return response;
