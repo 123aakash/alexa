@@ -74,7 +74,7 @@ var handler = async function (event) {
     }
 
      skill.invoke(event).then((abc)=>{
-        console.log("RESPONSE:",JSON.stringify(abc))
+        console.log("Actual RESPONSE:",JSON.stringify(abc))
         return abc;
      });
 };
