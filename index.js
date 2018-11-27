@@ -64,6 +64,7 @@ const handlers = {
         this.emit('NHS');
     },
     'NHS': function () {
+    console.log('hello 2');
          const factArr = data;
         const factIndex = Math.floor(Math.random() * factArr.length);
         const randomFact = factArr[factIndex];
@@ -101,6 +102,7 @@ const handlers = {
 };
 
 exports.handler = function (event, context, callback) {
+    console.log('hello 1');
     const alexa = Alexa.handler(event, context, callback);
     alexa.APP_ID = APP_ID;
     alexa.registerHandlers(handlers);
