@@ -41,7 +41,7 @@ const ErrorHandler = {
   };
 
 var skill = null;
-var handler = async function (event, context) {
+var handler = function (event, context) {
     // console.log(`REQUEST++++${JSON.stringify(event)}`);
 
     // HelloWorldIntentHandler,
