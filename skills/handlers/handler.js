@@ -41,7 +41,7 @@ const ErrorHandler = {
   };
 
 var skill = null;
-var handler = function (event, context) {
+var handler =async function (event, context) {
     // console.log(`REQUEST++++${JSON.stringify(event)}`);
 
     // HelloWorldIntentHandler,
@@ -58,10 +58,8 @@ var handler = function (event, context) {
             .create();
     }
 
-    const response = skill.invoke(event, context);
+    return skill.invoke(event, context);
     // console.log(`RESPONSE++++${JSON.stringify(response)}`);
-
-    return response;
 };
 
 exports.handler = handler;
