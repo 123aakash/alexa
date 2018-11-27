@@ -46,8 +46,7 @@ router.post('/', function (req, res) {
     }
     const response = await skill.invoke(event, context);
     console.log(`RESPONSE++++${JSON.stringify(response)}`);
-}
-
+    return res.json(response);
 });
 
 module.exports = router;
