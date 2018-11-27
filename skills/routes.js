@@ -8,7 +8,7 @@ var handler = require('./handlers/handler').handler;
 var skill;
 router.post('/', async function (req, res) {
     var data = req.body;
-    console.log(req);
+    // console.log(req);
     let context = data.context;
     let event = "event";
 
