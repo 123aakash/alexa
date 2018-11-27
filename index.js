@@ -55,57 +55,114 @@ const data = [
 //Editing anything below this line might break your skill.
 //=========================================================================================================================================
 
-const handlers = {
-    'LaunchRequest': function () {
-        //this.emit('GetNewFactIntent');
-        this.emit('NHS');
+const LaunchRequestHandler = {
+    canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
     },
-    'NHS': function () {
-    console.log('hello 2');
-         const factArr = data;
-        const factIndex = Math.floor(Math.random() * factArr.length);
-        const randomFact = factArr[factIndex];
-        const speechOutput ="le tera fact:" + randomFact;
+    handle(handlerInput) {
+      const speechText = 'Welcome to the Alexa Skills Kit, you can say hello!';
+  
+      return handlerInput.responseBuilder
+        .speak(speechText)
+        .reprompt(speechText)
+        .withSimpleCard('Hello World', speechText)
+        .getResponse();
+    }
+  };
 
-        this.response.cardRenderer(SKILL_NAME, randomFact);
-        this.response.speak(speechOutput);
-        this.emit(':responseReady');
+  const HelloWorldIntentHandler = {
+    canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+        && handlerInput.requestEnvelope.request.intent.name === 'HelloWorldIntent';
     },
-    'GetNewFactIntent': function () {
-        const factArr = data;
-        const factIndex = Math.floor(Math.random() * factArr.length);
-        const randomFact = factArr[factIndex];
-        const speechOutput = GET_FACT_MESSAGE + randomFact;
+    handle(handlerInput) {
+      const speechText = 'Hello World!';
+  
+      return handlerInput.responseBuilder
+        .speak(speechText)
+        .withSimpleCard('Hello World', speechText)
+        .getResponse();
+    }
+  };
 
-        this.response.cardRenderer(SKILL_NAME, randomFact);
-        this.response.speak(speechOutput);
-        this.emit(':responseReady');
+  const HelpIntentHandler = {
+    canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+        && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
     },
-    'AMAZON.HelpIntent': function () {
-        const speechOutput = HELP_MESSAGE;
-        const reprompt = HELP_REPROMPT;
+    handle(handlerInput) {
+      const speechText = 'You can say hello to me!';
+  
+      return handlerInput.responseBuilder
+        .speak(speechText)
+        .reprompt(speechText)
+        .withSimpleCard('Hello World', speechText)
+        .getResponse();
+    }
+  };
 
-        this.response.speak(speechOutput).listen(reprompt);
-        this.emit(':responseReady');
+  const CancelAndStopIntentHandler = {
+    canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+        && (handlerInput.requestEnvelope.request.intent.name === 'AMAZON.CancelIntent'
+          || handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
     },
-    'AMAZON.CancelIntent': function () {
-        this.response.speak(STOP_MESSAGE);
-        this.emit(':responseReady');
+    handle(handlerInput) {
+      const speechText = 'Goodbye!';
+  
+      return handlerInput.responseBuilder
+        .speak(speechText)
+        .withSimpleCard('Hello World', speechText)
+        .getResponse();
+    }
+  };
+
+
+  const SessionEndedRequestHandler = {
+    canHandle(handlerInput) {
+      return handlerInput.requestEnvelope.request.type === 'SessionEndedRequest';
     },
-    'AMAZON.StopIntent': function () {
-        this.response.speak(STOP_MESSAGE);
-        this.emit(':responseReady');
+    handle(handlerInput) {
+      //any cleanup logic goes here
+      return handlerInput.responseBuilder.getResponse();
+    }
+  };
+
+  const ErrorHandler = {
+    canHandle() {
+      return true;
     },
+    handle(handlerInput, error) {
+      console.log(`Error handled: ${error.message}`);
+  
+      return handlerInput.responseBuilder
+        .speak('Sorry, I can\'t understand the command. Please say again.')
+        .reprompt('Sorry, I can\'t understand the command. Please say again.')
+        .getResponse();
+    },
+  };
+
+
+
+let skill;
+
+exports.handler = async function (event, context) {
+  console.log(`REQUEST++++${JSON.stringify(event)}`);
+  if (!skill) {
+    skill = Alexa.SkillBuilders.custom()
+      .addRequestHandlers(
+        LaunchRequestHandler,
+        HelloWorldIntentHandler,
+        HelpIntentHandler,
+        CancelAndStopIntentHandler,
+        SessionEndedRequestHandler,
+      )
+      .addErrorHandlers(ErrorHandler)
+      .create();
+  }
+
+  const response = await skill.invoke(event, context);
+  console.log(`RESPONSE++++${JSON.stringify(response)}`);
+
+  return response;
 };
-
-exports.handler = function (event, context, callback) {
-    console.log('hello 1');
-    const alexa = Alexa.handler(event, context, callback);
-    alexa.APP_ID = APP_ID;
-    alexa.registerHandlers(handlers);
-    alexa.execute();
-};
-
-app.listen(port,(err)=>{
-    console.log(`Listening on port ${port}`);    
-});
