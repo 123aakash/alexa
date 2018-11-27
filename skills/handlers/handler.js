@@ -39,10 +39,10 @@ const ErrorHandler = {
         .getResponse();
     },
   };
-  
+
 var skill = null;
 var handler = async function (event, context) {
-    console.log(`REQUEST++++${JSON.stringify(event)}`);
+    // console.log(`REQUEST++++${JSON.stringify(event)}`);
 
     // HelloWorldIntentHandler,
     //       HelpIntentHandler,
