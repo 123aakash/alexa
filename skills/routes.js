@@ -10,7 +10,7 @@ router.post('/', async function (req, res) {
 
     const response = await handler(data, data.context);
     console.log("aakash:",response);
-    return res.send(response);
+    res.json(response);
 });
 
 exports.handler = handler;
