@@ -13,6 +13,7 @@ router.post('/', async function (req, res) {
     //     console.log("Actual RESPONSE:",JSON.stringify(abc))
     //     return res.json(abc);
     //  }); 
+    return res.json(response);
 });
 
 exports.handler = handler;
