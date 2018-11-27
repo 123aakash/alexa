@@ -48,6 +48,7 @@ var handler = function (event, context) {
     //       HelpIntentHandler,
     //       CancelAndStopIntentHandler,
     if (!skill) {
+        console.log("SKILL creating");
         skill = Alexa.SkillBuilders.custom()
             .addRequestHandlers(
                 LaunchRequestHandler,
