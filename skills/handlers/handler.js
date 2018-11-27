@@ -67,7 +67,8 @@ var handler = async function (event, context) {
         console.log("SKILL creating");
         skill = Alexa.SkillBuilders.custom()
             .addRequestHandlers(
-                HelloWorldHandler
+                LaunchRequestHandler,
+                SessionEndedRequestHandler
             )
             .addErrorHandlers(ErrorHandler)
             .create();
