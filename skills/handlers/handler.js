@@ -23,7 +23,7 @@ const SessionEndedRequestHandler = {
     }
 };
 
-
+var skill = null;
 var handler = async function (event, context) {
     console.log(`REQUEST++++${JSON.stringify(event)}`);
 
