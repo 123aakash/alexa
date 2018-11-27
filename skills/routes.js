@@ -1,5 +1,5 @@
 var express = require('express');
-var router = express.Router();
+var router = express();
 var handler = require('./handlers/handler').handler;
 
 router.post('/', async function (req, res) {
@@ -9,9 +9,8 @@ router.post('/', async function (req, res) {
     let event = "event";
 
     const response = await handler(data, data.context);
-    console.log("aakash:",typeof data,JSON.stringify(response));
- res.json(response);
- res.end();
+    console.log("aakash:", typeof data, JSON.stringify(response));
+    return res.json(response);
 });
 
 module.exports = router;
