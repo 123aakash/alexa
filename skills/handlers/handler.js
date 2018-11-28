@@ -1,5 +1,6 @@
 const Alexa = require('ask-sdk');
 
+const NhsHandler = require('./NHS').default;
 
 const HelloWorldHandler = {
     canHandle(handlerInput) {
@@ -15,6 +16,7 @@ const HelloWorldHandler = {
             .getResponse();
     }
 };
+
 
 const LaunchRequestHandler = {
     canHandle(handlerInput) {
@@ -67,8 +69,9 @@ var handler = async function (event, context) {
         console.log("SKILL creating");
         skill = Alexa.SkillBuilders.custom()
             .addRequestHandlers(
+                NhsHandler,
                 LaunchRequestHandler,
-                SessionEndedRequestHandler
+                SessionEndedRequestHandler,
             )
             .addErrorHandlers(ErrorHandler)
             .create();
