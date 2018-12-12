@@ -1,6 +1,35 @@
-const mUrl =
-    "https://api.newhomesource.com/api/v2/Search/Homes?partnerid=1&City=austin&SortBy=Random&SortSecondBy=None&bed=2&marketid=269";
 const SearchModel = require('../../api/models/SearchModel');
+const cities = require('../../api/maps/cities');
+const CitiesInState = require('../../api/cities-in-state');
+var ApiRequest = require('../../api/ApiRequest');
+
+let getCity = (mapsResponse) => {
+    console.log('google maps Data:', mapsResponse.json);
+    // if(mapsResponse.json.status == 'ZERO_RESULTS') // do something
+    const stateCode = cities.getStateCode(mapsResponse.json);
+    const cityName = cities.getCityName(mapsResponse.json);
+    return CitiesInState.getCity(cityName, stateCode);
+
+};
+
+let getHomes = (cityObject) => {
+    let api = new ApiRequest('');
+
+    console.log("market id:", cityObject.MktId);
+    const search = require('../../api/search');
+    const query = search.createSearchQurey({ marketid: cityObject.MktId });
+    return api.request(...Object.values(query));
+};
+
+let createResponse = (data) => {
+    console.log('final result data:', data);
+    var sm = new SearchModel(JSON.parse(data).Result);
+
+    return a.responseBuilder
+        .speak('Heres some data:' + JSON.stringify(sm.data[0]['HomeId']))
+        .withSimpleCard("NONE")
+        .getResponse();
+};
 
 const NhsHandler = {
     canHandle(handlerInput) {
@@ -9,23 +38,10 @@ const NhsHandler = {
     },
     handle(handlerInput) {
         const speechText = 'Searching for homes';
-            // + JSON.stringify(handlerInput.attributesManager.getSessionAttributes())
-            // + JSON.stringify(handlerInput.attributesManager.getRequestAttributes())
-            // + JSON.stringify(handlerInput.requestEnvelope.request.intent);
-
-        var api = new require('../../api/ApiRequest');
-        api = new api(mUrl);
-
-        return api.request(mUrl).then(function (data) {
-            var sm = new SearchModel(JSON.parse(data).Result);
-            // console.log("Result from api",JSON.stringify(sm));
-
-            return handlerInput.responseBuilder
-                .speak('Heres some data:'+JSON.stringify(sm.data[0]['HomeId']))
-                .withSimpleCard("NONE")
-                .getResponse();
-        });
-
+        const intentSlots = handlerInput.requestEnvelope.request.intent.slots;
+        a =  handlerInput;
+        return cities.getState(intentSlots.city.value)
+            .then(getCity).then(getHomes).then(createResponse);
     }
 }
 
