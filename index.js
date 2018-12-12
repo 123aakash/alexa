@@ -6,7 +6,7 @@ app.get('/',(req,res)=>{
 });
 const port = process.env.PORT || 1337;
 
-app.listen(port, () => console.log('alexa-webhook is listening on port',port));
+app.listen(port, () => console.log(`alexa-webhook is listening on port ${port} env ${process.env.NODE_ENV}`));
 
 const APP_ID = 'amzn1.ask.skill.1294b7e3-a0a0-432c-a61a-83d70e04678a';
 

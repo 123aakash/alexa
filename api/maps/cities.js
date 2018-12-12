@@ -1,5 +1,5 @@
 //TODO: place in config file
-const ApiKey = '';
+const ApiKey = process.env.GOOGLE_MAPS_KEY || '';
 
 let googleMapsClient = require('@google/maps').createClient({
   key: ApiKey,
