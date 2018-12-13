@@ -1,16 +1,8 @@
 const SearchModel = require('../../api/models/SearchModel');
-const cities = require('../../api/maps/cities');
-const CitiesInState = require('../../api/cities-in-state');
+const city = require('../../api/city');
 var ApiRequest = require('../../api/ApiRequest');
 
-let getCity = (mapsResponse) => {
-    console.log('google maps Data:', mapsResponse.json);
-    // if(mapsResponse.json.status == 'ZERO_RESULTS') // do something
-    const stateCode = cities.getStateCode(mapsResponse.json);
-    const cityName = cities.getCityName(mapsResponse.json);
-    return CitiesInState.getCity(cityName, stateCode);
 
-};
 
 let getHomes = (cityObject) => {
     let api = new ApiRequest('');
@@ -39,9 +31,9 @@ const NhsHandler = {
     handle(handlerInput) {
         const speechText = 'Searching for homes';
         const intentSlots = handlerInput.requestEnvelope.request.intent.slots;
-        a =  handlerInput;
-        return cities.getState(intentSlots.city.value)
-            .then(getCity).then(getHomes).then(createResponse);
+        a = handlerInput;
+        return city.getCityDetails(intentSlots.city.value)
+            .then(getHomes).then(createResponse);
     }
 }
 

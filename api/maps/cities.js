@@ -1,17 +1,5 @@
-//TODO: place in config file
-const ApiKey = process.env.GOOGLE_MAPS_KEY || '';
+let searchLocation = require('./search-location').getLocationData;
 
-let googleMapsClient = require('@google/maps').createClient({
-  key: ApiKey,
-  Promise: Promise
-});
-
-let getLocationData = async function (cityName) {
-  return googleMapsClient.geocode({
-    address: cityName,
-    region: 'us',
-  }).asPromise();
-};
 
 let searchFor = function (data, placeType) {
   const components = data.results[0].address_components;
@@ -35,7 +23,7 @@ let getCityName = function (data) {
 };
 
 module.exports = {
-  getState: getLocationData,
+  getState: searchLocation,
   getStateCode,
-  getCityName
+  getCityName,
 };
