@@ -14,13 +14,38 @@ let getHomes = (cityObject) => {
     return api.request(...Object.values(query));
 };
 
-let createResponse = (data) => {
-    console.log('final result data:', data);
-    var sm = new SearchModel(JSON.parse(data).Result);
+let createResponse = (handlerInput, data) => {
+    var searchModel = new SearchModel(JSON.parse(data).Result);
+    console.log('final result data:', searchModel);
 
-    return handlerInput.responseBuilder
-        .speak('Heres some data:' + JSON.stringify(sm.data[0]['HomeId']))
-        .withSimpleCard("NONE")
+    let homeList = [];
+    searchModel.data.forEach((home) => {
+        const homeImage = new Alexa.ImageHelper().withDescription(`Home Image`);
+        homeImage.addImageInstance(home.Thumb1);
+
+        homeList.push({
+            token: home.HomeId,
+            textContent: new Alexa.PlainTextContentHelper()
+                .withPrimaryText(home.PlanName)
+                .withSecondaryText(`Abbreviation: ${home.HomeId}`)
+                .withTertiaryText(`Capital: ${home.CommName}`)
+                .getTextContent(),
+            image: homeImage.getImage()
+
+        });
+    });
+
+    responseBuilder.addRenderTemplateDirective({
+        type: `ListTemplate1`,
+        token: 'listToken',
+        backButton: 'hidden',
+        title: `I list things like this:`,
+        listItems: homeList,
+    });
+
+    return responseBuilder
+        .speak('I found these homes')
+        .withStandardCard('')
         .getResponse();
 };
 
@@ -37,38 +62,7 @@ const NhsHandler = {
         return city.getCityDetails(intentSlots.city.value)
             .then(getHomes)
             .then((data) => {
-                var searchModel = new SearchModel(JSON.parse(data).Result);
-                console.log('final result data:', searchModel);
-
-                let homeList = [];
-                searchModel.data.forEach((home) => {
-                    const homeImage = new Alexa.ImageHelper().withDescription(`Home Image`);
-                    homeImage.addImageInstance(home.Thumb1);
-
-                    homeList.push({
-                        token: home.HomeId,
-                        textContent: new Alexa.PlainTextContentHelper()
-                            .withPrimaryText(home.PlanName)
-                            .withSecondaryText(`Abbreviation: ${home.HomeId}`)
-                            .withTertiaryText(`Capital: ${home.CommName}`)
-                            .getTextContent(),
-                        image: homeImage.getImage()
-
-                    });
-                });
-
-                responseBuilder.addRenderTemplateDirective({
-                    type: `ListTemplate1`,
-                    token: 'listToken',
-                    backButton: 'hidden',
-                    title: `I list things like this:`,
-                    listItems: homeList,
-                });
-
-                return responseBuilder
-                    .speak('Heres some data:' + JSON.stringify(searchModel.data[0]['HomeId']))
-                    .withStandardCard('')
-                    .getResponse();
+                createResponse(handlerInput, data);
             });
     }
 }
