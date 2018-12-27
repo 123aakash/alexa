@@ -60,7 +60,8 @@ const NhsHandler = {
     },
     async handle(handlerInput) {
         const speechText = 'Searching for homes';
-        const intentSlots = handlerInput.requestEnvelope.request.intent.slots;
+        const intentRequest =  handlerInput.requestEnvelope.request;
+        const intentSlots = intentRequest.intent.slots;
 
         let progressiveResponse = new ProgressiveResponse(handlerInput);
         try {
@@ -81,7 +82,7 @@ const NhsHandler = {
                     return createResponse(handlerInput, data);
                 });
         } catch (error) {
-            return responseBuilder.speak(Messages.CAN_NOT_SEARCH);
+            return handlerInput.responseBuilder.speak(Messages.CAN_NOT_SEARCH);
         }
 
     }
