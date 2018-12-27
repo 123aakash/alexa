@@ -69,6 +69,12 @@ const NhsHandler = {
             console.error(error);
         }
         try {
+            const updatedIntent = handlerInput.requestEnvelope.request.intent;
+            if (intentRequest.dialogState != "COMPLETED") {
+                return handlerInput.responseBuilder
+                    .addDelegateDirective(updatedIntent)
+                    .getResponse();
+            }
             return city.getCityDetails(intentSlots.city.value)
                 .then(getHomes)
                 .then((data) => {
