@@ -3,6 +3,7 @@ const city = require('../../api/city');
 var ApiRequest = require('../../api/ApiRequest');
 
 const Alexa = require('ask-sdk');
+const ProgressiveResponse = require('../progressive-response').default;
 
 
 let getHomes = (cityObject) => {
@@ -14,7 +15,9 @@ let getHomes = (cityObject) => {
     return api.request(...Object.values(query));
 };
 
-let createResponse = (handlerInput, data) => {
+let createResponse = function (handlerInput, data) {
+
+    let responseBuilder = handlerInput.responseBuilder;
     var searchModel = new SearchModel(JSON.parse(data).Result);
     console.log('final result data:', searchModel);
 
@@ -57,12 +60,17 @@ const NhsHandler = {
     handle(handlerInput) {
         const speechText = 'Searching for homes';
         const intentSlots = handlerInput.requestEnvelope.request.intent.slots;
-        let responseBuilder = handlerInput.responseBuilder;
 
+        let progressiveResponse = new ProgressiveResponse(handlerInput);
+        try {
+            progressiveResponse.callDirectiveService();
+        } catch (error) {
+
+        }
         return city.getCityDetails(intentSlots.city.value)
             .then(getHomes)
-            .then((data) => {
-                createResponse(handlerInput, data);
+            .then((data) => {   
+                return createResponse(handlerInput, data);
             });
     }
 }
