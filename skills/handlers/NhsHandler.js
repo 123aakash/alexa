@@ -3,7 +3,7 @@ const city = require('../../api/city');
 var ApiRequest = require('../../api/ApiRequest');
 
 const Alexa = require('ask-sdk');
-const ProgressiveResponse = require('../progressive-response').default;
+const ProgressiveResponse = require('../progressive-response');
 
 
 let getHomes = (cityObject) => {
@@ -57,15 +57,15 @@ const NhsHandler = {
         return handlerInput.requestEnvelope.request.type === 'IntentRequest'
             && handlerInput.requestEnvelope.request.intent.name === 'find_homes';
     },
-    handle(handlerInput) {
+    async handle(handlerInput) {
         const speechText = 'Searching for homes';
         const intentSlots = handlerInput.requestEnvelope.request.intent.slots;
 
         let progressiveResponse = new ProgressiveResponse(handlerInput);
         try {
-            progressiveResponse.callDirectiveService();
+           await progressiveResponse.callDirectiveService();
         } catch (error) {
-
+            console.error(error);
         }
         return city.getCityDetails(intentSlots.city.value)
             .then(getHomes)

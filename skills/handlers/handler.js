@@ -60,11 +60,7 @@ const ErrorHandler = {
 
 var skill = null;
 var handler = async function (event, context) {
-    // console.log(`REQUEST++++${JSON.stringify(event)}`);
-
-    // HelloWorldIntentHandler,
-    //       HelpIntentHandler,
-    //       CancelAndStopIntentHandler,
+    
     if (!skill) {
         console.log("SKILL creating");
         skill = Alexa.SkillBuilders.custom()
@@ -74,6 +70,7 @@ var handler = async function (event, context) {
                 SessionEndedRequestHandler,
             )
             .addErrorHandlers(ErrorHandler)
+            .withApiClient(new Alexa.DefaultApiClient())
             .create();
     }
 
