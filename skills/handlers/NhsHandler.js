@@ -1,6 +1,7 @@
 const SearchModel = require('../../api/models/SearchModel');
 const city = require('../../api/city');
 var ApiRequest = require('../../api/ApiRequest');
+const Messages = require('../Messages');
 
 const Alexa = require('ask-sdk');
 const ProgressiveResponse = require('../progressive-response');
@@ -63,15 +64,20 @@ const NhsHandler = {
 
         let progressiveResponse = new ProgressiveResponse(handlerInput);
         try {
-           await progressiveResponse.callDirectiveService();
+            await progressiveResponse.callDirectiveService();
         } catch (error) {
             console.error(error);
         }
-        return city.getCityDetails(intentSlots.city.value)
-            .then(getHomes)
-            .then((data) => {   
-                return createResponse(handlerInput, data);
-            });
+        try {
+            return city.getCityDetails(intentSlots.city.value)
+                .then(getHomes)
+                .then((data) => {
+                    return createResponse(handlerInput, data);
+                });
+        } catch (error) {
+            return responseBuilder.speak(Messages.CAN_NOT_SEARCH);
+        }
+
     }
 }
 

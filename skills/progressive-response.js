@@ -11,7 +11,6 @@ class ProgressiveResponse {
 
     callDirectiveService() {
         const directiveServiceClient = this.serviceClientFactory.getDirectiveServiceClient();
-        console.log("This:",this);
         let requestId = this.requestId;
         const directive = {
             header: {
