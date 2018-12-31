@@ -70,7 +70,7 @@ const NhsHandler = {
 
         let progressiveResponse = new ProgressiveResponse(handlerInput);
         try {
-            if (intentSlots.city.confirmationStatus != 'CONFIRMED')
+            if (intentSlots.city.confirmationStatus == 'CONFIRMED')
                 await progressiveResponse.callDirectiveService();
         } catch (error) {
             console.error(error);
