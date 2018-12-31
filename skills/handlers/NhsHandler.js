@@ -22,6 +22,11 @@ let createResponse = function (handlerInput, data) {
     var searchModel = new SearchModel(JSON.parse(data).Result);
     console.log('final result data:', searchModel);
 
+    if (searchModel.length) {
+        return responseBuilder
+            .speak('No Results found. Search again?');
+    }
+
     let homeList = [];
     searchModel.data.forEach((home) => {
         const homeImage = new Alexa.ImageHelper().withDescription(`Home Image`);
@@ -43,7 +48,7 @@ let createResponse = function (handlerInput, data) {
         type: `ListTemplate1`,
         token: 'listToken',
         backButton: 'hidden',
-        title: `I list things like this:`,
+        title: `Homes in City:`,
         listItems: homeList,
     });
 
@@ -60,18 +65,19 @@ const NhsHandler = {
     },
     async handle(handlerInput) {
         const speechText = 'Searching for homes';
-        const intentRequest =  handlerInput.requestEnvelope.request;
+        const intentRequest = handlerInput.requestEnvelope.request;
         const intentSlots = intentRequest.intent.slots;
 
         let progressiveResponse = new ProgressiveResponse(handlerInput);
         try {
-            await progressiveResponse.callDirectiveService();
+            if (intentSlots.city.confirmationStatus != 'CONFIRMED')
+                await progressiveResponse.callDirectiveService();
         } catch (error) {
             console.error(error);
         }
         try {
             const updatedIntent = handlerInput.requestEnvelope.request.intent;
-            if (intentRequest.dialogState != "COMPLETED") {
+            if (intentRequest.dialogState != "COMPLETED" && intentSlots.city.confirmationStatus != 'CONFIRMED') {
                 return handlerInput.responseBuilder
                     .addDelegateDirective(updatedIntent)
                     .getResponse();
